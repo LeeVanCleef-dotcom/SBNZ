@@ -1,51 +1,46 @@
-package model;
+package com.example.sbnz.model;
 
 import java.util.List;
 
-public class Champion {
+import javax.persistence.*;
 
-	enum Class {
-		ASSASSIN,
-		FIGHTER,
-		MAGE,
-		MARKSMAN,
-		SUPPORT,
-		TANK
-	}
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Table(name = "champion")
+public class Champion {
 	
-	enum AttackType {
-		MEELE,
-		RANGED,
-		HYBRID
-	}
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+
+	@Column
+	@Enumerated(EnumType.STRING)
+	@ElementCollection(targetClass = ChampionClass.class)
+	private List<ChampionClass> classes;
 	
-	enum DamageType {
-		PHYSICAL,
-		MAGIC,
-		MIXED
-	}
-	
-	enum Difficulty {
-		I,
-		II,
-		III
-	}
-	
-	private List<Class> classes;
-	
+	@Column(nullable = false)
 	private String name;
 	
+	@Column(nullable = false)
 	private int style;
 	
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private AttackType attackType;
 	
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private DamageType damageType;
 	
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private Difficulty difficulty;
 	
+	@Column
+	@OneToMany(fetch = FetchType.EAGER)
 	private List<Champion> counters;
 
-	public Champion(List<Class> classes, String name, int style, AttackType attackType, DamageType damageType, Difficulty difficulty,
+	public Champion(List<ChampionClass> classes, String name, int style, AttackType attackType, DamageType damageType, Difficulty difficulty,
 			List<Champion> counters) {
 		super();
 		this.classes = classes;
@@ -57,11 +52,11 @@ public class Champion {
 		this.counters = counters;
 	}
 
-	public List<Class> getClasses() {
+	public List<ChampionClass> getClasses() {
 		return classes;
 	}
 
-	public void setClasses(List<Class> classes) {
+	public void setClasses(List<ChampionClass> classes) {
 		this.classes = classes;
 	}
 

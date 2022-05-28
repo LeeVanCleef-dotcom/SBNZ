@@ -1,4 +1,4 @@
-package model;
+package com.example.sbnz.model;
 
 import java.util.List;
 
