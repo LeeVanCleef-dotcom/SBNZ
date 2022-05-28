@@ -8,7 +8,7 @@ import com.example.sbnz.model.*;
 
 public class ChampionDTO {
 
-	private List<ChampionClass> classes;
+	private List<ChampClass> classes;
 	
 	private String name;
 	
@@ -36,11 +36,11 @@ public class ChampionDTO {
 		}
 	}
 
-	public List<ChampionClass> getClasses() {
+	public List<ChampClass> getClasses() {
 		return classes;
 	}
 
-	public void setClasses(List<ChampionClass> classes) {
+	public void setClasses(List<ChampClass> classes) {
 		this.classes = classes;
 	}
 

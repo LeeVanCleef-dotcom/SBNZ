@@ -14,9 +14,13 @@ public class Champion {
 	private Integer id;
 
 	@Column
-	@Enumerated(EnumType.STRING)
-	@ElementCollection(targetClass = ChampionClass.class)
-	private List<ChampionClass> classes;
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinTable(
+			name = "champ_classes",
+			joinColumns = @JoinColumn(name = "champion_id"),
+			inverseJoinColumns = @JoinColumn(name = "champ_class_id")
+			)
+	private List<ChampClass> classes;
 	
 	@Column(nullable = false)
 	private String name;
@@ -37,10 +41,15 @@ public class Champion {
 	private Difficulty difficulty;
 	
 	@Column
-	@OneToMany(fetch = FetchType.EAGER)
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(
+			name = "champ_counters",
+			joinColumns = @JoinColumn(name = "champion_id"),
+			inverseJoinColumns = @JoinColumn(name = "champ_counters_id")
+			)
 	private List<Champion> counters;
 
-	public Champion(List<ChampionClass> classes, String name, int style, AttackType attackType, DamageType damageType, Difficulty difficulty,
+	public Champion(List<ChampClass> classes, String name, int style, AttackType attackType, DamageType damageType, Difficulty difficulty,
 			List<Champion> counters) {
 		super();
 		this.classes = classes;
@@ -51,12 +60,14 @@ public class Champion {
 		this.difficulty = difficulty;
 		this.counters = counters;
 	}
+	
+	public Champion() {}
 
-	public List<ChampionClass> getClasses() {
+	public List<ChampClass> getClasses() {
 		return classes;
 	}
 
-	public void setClasses(List<ChampionClass> classes) {
+	public void setClasses(List<ChampClass> classes) {
 		this.classes = classes;
 	}
 
