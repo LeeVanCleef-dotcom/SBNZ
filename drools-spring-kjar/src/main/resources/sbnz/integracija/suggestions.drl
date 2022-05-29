@@ -1,0 +1,12 @@
+package sbnz.integracija;
+
+import com.example.sbnz.model.*;
+import com.example.sbnz.dto.*;
+
+rule "Znj"
+    when
+        $q: QuestionnaireDTO();
+    then
+        $q.setStyle(60);
+        update($q);
+end

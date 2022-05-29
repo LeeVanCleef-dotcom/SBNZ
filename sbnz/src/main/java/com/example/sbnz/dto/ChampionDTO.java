@@ -12,6 +12,8 @@ public class ChampionDTO {
 	
 	private String name;
 	
+	private int score;
+	
 	private int style;
 	
 	private AttackType attackType;
@@ -25,6 +27,7 @@ public class ChampionDTO {
 	public ChampionDTO(Champion champion) {
 		this.classes = champion.getClasses();
 		this.name = champion.getName();
+		this.score = 0;
 		this.style = champion.getStyle();
 		this.attackType = champion.getAttackType();
 		this.damageType = champion.getDamageType();
@@ -35,6 +38,8 @@ public class ChampionDTO {
 			this.counters.add(new ChampionDTO(c));
 		}
 	}
+	
+	public ChampionDTO() {}
 
 	public List<ChampClass> getClasses() {
 		return classes;
@@ -90,6 +95,14 @@ public class ChampionDTO {
 
 	public void setCounters(List<ChampionDTO> counters) {
 		this.counters = counters;
+	}
+	
+	public void setScore(int score) {
+		this.score = score;
+	}
+	
+	public int getScore() {
+		return this.score;
 	}
 	
 }
