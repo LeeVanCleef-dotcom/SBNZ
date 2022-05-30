@@ -56,21 +56,28 @@ public class ChampionServiceImpl implements ChampionService {
 	@Override
 	public List<ChampionDTO> filterChampions(QuestionnaireDTO questionnaire) {
 		List<ChampionDTO> champions = getAllChampions();
+		
+		KieSession kieSession = kieContainer.newKieSession("questionnaire");
+		kieSession.setGlobal("questionnaire", questionnaire);
 
 		Iterator<ChampionDTO> it = champions.iterator();
 		while (it.hasNext()) {
 			ChampionDTO ch = it.next();
-			for (String champName : questionnaire.getPickedChampions()) {
-				if (champName.equals(ch.getName())) {
-					it.remove();
-				}
-			}
-
-			for (String champName : questionnaire.getBannedChampions()) {
-				if (champName.equals(ch.getName())) {
-					it.remove();
-				}
-			}
+			
+			kieSession.insert(ch);
+			kieSession.fireAllRules();
+			
+//			for (String champName : questionnaire.getPickedChampions()) {
+//				if (champName.equals(ch.getName())) {
+//					it.remove();
+//				}
+//			}
+//
+//			for (String champName : questionnaire.getBannedChampions()) {
+//				if (champName.equals(ch.getName())) {
+//					it.remove();
+//				}
+//			}
 		}
 
 		return champions;

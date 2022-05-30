@@ -3,10 +3,27 @@ package sbnz.integracija;
 import com.example.sbnz.model.*;
 import com.example.sbnz.dto.*;
 
-rule "Submit Questionnaire"
+global QuestionnaireDTO questionnaire;
+
+rule "Submit questionnaire"
     when
         $q: QuestionnaireDTO();
     then
         $q.setStyle(60);
         update($q);
+end
+
+rule "Remove banned champions"
+	when
+		$ch: ChampionDTO(name memberOf questionnaire.bannedChampions);
+	then
+		delete($ch);
+end
+
+		
+rule "Remove picked champions"
+	when
+		$ch: ChampionDTO(name memberOf questionnaire.pickedChampions);
+	then
+		delete($ch);
 end

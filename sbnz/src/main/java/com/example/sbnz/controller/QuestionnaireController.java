@@ -5,11 +5,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
+import com.example.sbnz.dto.ChampionDTO;
 import com.example.sbnz.dto.QuestionnaireDTO;
 import com.example.sbnz.service.ChampionService;
 import com.example.sbnz.service.QuestionnaireService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
@@ -24,11 +28,8 @@ public class QuestionnaireController {
 	private QuestionnaireService questionnaireService;
 	
 	@PostMapping(value = "/submit", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public String submitQuestionnaire(@RequestBody QuestionnaireDTO questionnaire) {
-		System.out.println("usao");
-		questionnaireService.submitQuestionnaire(questionnaire);
-		
-		return "ok";
+	public ResponseEntity<List<ChampionDTO>> submitQuestionnaire(@RequestBody QuestionnaireDTO questionnaire) {
+		return new ResponseEntity<>(questionnaireService.submitQuestionnaire(questionnaire), HttpStatus.OK);
 	}
 
 }

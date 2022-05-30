@@ -1,6 +1,10 @@
 package com.example.sbnz.serviceImpl;
 
+import java.util.List;
+
+import com.example.sbnz.dto.ChampionDTO;
 import com.example.sbnz.dto.QuestionnaireDTO;
+import com.example.sbnz.service.ChampionService;
 import com.example.sbnz.service.QuestionnaireService;
 
 import org.kie.api.runtime.KieContainer;
@@ -13,12 +17,13 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
 
 	@Autowired
 	private KieContainer kieContainer;
+	
+	@Autowired
+	private ChampionService championService;
 
 	@Override
-	public void submitQuestionnaire(QuestionnaireDTO questionnaire) {
-		KieSession kieSession = kieContainer.newKieSession("questionnaire");
-		kieSession.insert(questionnaire);
-		System.out.println(kieSession.fireAllRules());
+	public List<ChampionDTO> submitQuestionnaire(QuestionnaireDTO questionnaire) {
+		return championService.filterChampions(questionnaire);
 	}
 
 }
