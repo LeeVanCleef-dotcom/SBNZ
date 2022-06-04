@@ -22,4 +22,22 @@ public enum Difficulty {
         }
         return null;
 	}
+	
+	public int getValue() {
+		int val = 0;
+
+		switch (this.difficulty) {
+			case "I":
+				val = 1;
+				break;
+			case "II":
+				val = 2;
+				break;
+			case "III":
+				val = 3;
+				break;
+		}
+		
+		return val;
+	}
 }

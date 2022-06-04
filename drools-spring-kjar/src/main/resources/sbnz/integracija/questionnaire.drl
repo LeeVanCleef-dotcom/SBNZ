@@ -2,6 +2,8 @@ package sbnz.integracija;
 
 import com.example.sbnz.model.*;
 import com.example.sbnz.dto.*;
+import java.util.*;
+import java.lang.*;
 
 global QuestionnaireDTO questionnaire;
 
@@ -16,14 +18,51 @@ end
 rule "Remove banned champions"
 	when
 		$ch: ChampionDTO(name memberOf questionnaire.bannedChampions);
+		$it: Iterator();
 	then
+		$it.remove();
 		delete($ch);
+		delete($it);
 end
 
 		
 rule "Remove picked champions"
 	when
 		$ch: ChampionDTO(name memberOf questionnaire.pickedChampions);
+		$it: Iterator();
 	then
+		$it.remove();
+		delete($ch);
+		delete($it);
+end
+
+
+// izmestiti svaki score u zasebna pravila sa sailence
+rule "Score the champion"
+	no-loop true
+	lock-on-active true
+	when
+		$ch: ChampionDTO();
+		$q: QuestionnaireDTO();
+	then
+		int styleDifference = -Math.abs($ch.getStyle() - $q.getStyle());
+		$ch.setScore($ch.getScore() + styleDifference);
+
+		for (ChampClass champClass : $ch.getClasses()) {
+			for (String questionnaireClass : $q.getChampionClasses()) {
+				if (champClass.getChampionClass().equalsIgnoreCase(questionnaireClass)) 
+					$ch.setScore($ch.getScore() + 30);
+			}
+		}
+
+		int difficultyDifference = Math.abs(Difficulty.fromString($q.getDifficulty()).getValue() - $ch.getDifficulty().getValue());
+		$ch.setScore($ch.getScore() + ((difficultyDifference == 0) ? 20 : -difficultyDifference * 20));
+
+		$ch.setScore($ch.getScore() + ((AttackType.fromString($q.getAttackType()) == $ch.getAttackType()) ? 30 : -30));
+
+		$ch.setScore($ch.getScore() + ((DamageType.fromString($q.getDamageType()) == $ch.getDamageType()) ? 40 : -40));
+
+		update($ch);
+		delete($q);
 		delete($ch);
 end

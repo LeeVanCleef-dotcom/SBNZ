@@ -65,21 +65,16 @@ public class ChampionServiceImpl implements ChampionService {
 			ChampionDTO ch = it.next();
 			
 			kieSession.insert(ch);
+			kieSession.insert(it);
 			kieSession.fireAllRules();
-			
-//			for (String champName : questionnaire.getPickedChampions()) {
-//				if (champName.equals(ch.getName())) {
-//					it.remove();
-//				}
-//			}
-//
-//			for (String champName : questionnaire.getBannedChampions()) {
-//				if (champName.equals(ch.getName())) {
-//					it.remove();
-//				}
-//			}
 		}
-
+		
+		for (ChampionDTO ch : champions) {
+			kieSession.insert(ch);
+			kieSession.insert(questionnaire);
+			kieSession.fireAllRules();
+		}
+		
 		return champions;
 	}
 
