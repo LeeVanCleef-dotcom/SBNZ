@@ -7,15 +7,7 @@ import java.lang.*;
 
 global QuestionnaireDTO questionnaire;
 
-rule "Submit questionnaire"
-    when
-        $q: QuestionnaireDTO();
-    then
-        $q.setStyle(60);
-        update($q);
-end
-
-rule "Remove banned champions"
+rule "Remove banned champions" salience 10
 	when
 		$ch: ChampionDTO(name memberOf questionnaire.bannedChampions);
 		$it: Iterator();
@@ -24,9 +16,8 @@ rule "Remove banned champions"
 		delete($ch);
 		delete($it);
 end
-
 		
-rule "Remove picked champions"
+rule "Remove picked champions" salience 10
 	when
 		$ch: ChampionDTO(name memberOf questionnaire.pickedChampions);
 		$it: Iterator();
@@ -36,33 +27,48 @@ rule "Remove picked champions"
 		delete($it);
 end
 
-
-// izmestiti svaki score u zasebna pravila sa sailence
-rule "Score the champion"
+rule "Score difficulty"
 	no-loop true
 	lock-on-active true
 	when
 		$ch: ChampionDTO();
-		$q: QuestionnaireDTO();
 	then
-		int styleDifference = -Math.abs($ch.getStyle() - $q.getStyle());
-		$ch.setScore($ch.getScore() + styleDifference);
-
-		for (ChampClass champClass : $ch.getClasses()) {
-			for (String questionnaireClass : $q.getChampionClasses()) {
-				if (champClass.getChampionClass().equalsIgnoreCase(questionnaireClass)) 
-					$ch.setScore($ch.getScore() + 30);
-			}
-		}
-
-		int difficultyDifference = Math.abs(Difficulty.fromString($q.getDifficulty()).getValue() - $ch.getDifficulty().getValue());
-		$ch.setScore($ch.getScore() + ((difficultyDifference == 0) ? 20 : -difficultyDifference * 20));
-
-		$ch.setScore($ch.getScore() + ((AttackType.fromString($q.getAttackType()) == $ch.getAttackType()) ? 30 : -30));
-
-		$ch.setScore($ch.getScore() + ((DamageType.fromString($q.getDamageType()) == $ch.getDamageType()) ? 40 : -40));
-
+		int difficultyDifference = Math.abs(Difficulty.fromString(questionnaire.getDifficulty()).getValue() - $ch.getDifficulty().getValue());
+		$ch.setScore($ch.getScore() + ((difficultyDifference == 0) ? 40 : -difficultyDifference * 20));
+		
 		update($ch);
-		delete($q);
-		delete($ch);
+end
+
+rule "Score style"
+	no-loop true
+	lock-on-active true
+	when
+		$ch: ChampionDTO();
+	then
+		int styleDifference = -Math.abs(Math.round(($ch.getStyle() - questionnaire.getStyle()) / 2));
+		$ch.setScore($ch.getScore() + styleDifference);
+		
+		update($ch);
+end
+
+rule "Score attack type"
+	no-loop true
+	lock-on-active true
+	when
+		$ch: ChampionDTO();
+	then
+		$ch.setScore($ch.getScore() + ((AttackType.fromString(questionnaire.getAttackType()) == $ch.getAttackType()) ? 35 : -20));
+		
+		update($ch);
+end
+
+rule "Score damage type"
+	no-loop true
+	lock-on-active true
+	when
+		$ch: ChampionDTO();
+	then
+		$ch.setScore($ch.getScore() + ((DamageType.fromString(questionnaire.getDamageType()) == $ch.getDamageType()) ? 40 : -30));
+		
+		update($ch);
 end

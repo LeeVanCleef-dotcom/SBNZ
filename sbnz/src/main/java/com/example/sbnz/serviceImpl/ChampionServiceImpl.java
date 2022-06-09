@@ -69,12 +69,6 @@ public class ChampionServiceImpl implements ChampionService {
 			kieSession.fireAllRules();
 		}
 		
-		for (ChampionDTO ch : champions) {
-			kieSession.insert(ch);
-			kieSession.insert(questionnaire);
-			kieSession.fireAllRules();
-		}
-		
 		return champions;
 	}
 
