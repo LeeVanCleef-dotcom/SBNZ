@@ -59,6 +59,8 @@ public class ChampionServiceImpl implements ChampionService {
 		
 		KieSession kieSession = kieContainer.newKieSession("questionnaire");
 		kieSession.setGlobal("questionnaire", questionnaire);
+		
+		kieSession.insert(questionnaire);
 
 		Iterator<ChampionDTO> it = champions.iterator();
 		while (it.hasNext()) {

@@ -29,11 +29,11 @@ public class ChampClass {
 	
 	public ChampClass() {}
 
-	public String getChampionClass() {
+	public String getChampClass() {
 		return champClass;
 	}
 
-	public void setChampionClass(String championClass) {
+	public void setChampClass(String championClass) {
 		this.champClass = championClass;
 	}
 	

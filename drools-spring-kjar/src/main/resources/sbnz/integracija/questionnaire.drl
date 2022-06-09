@@ -9,8 +9,8 @@ global QuestionnaireDTO questionnaire;
 
 rule "Remove banned champions" salience 10
 	when
-		$ch: ChampionDTO(name memberOf questionnaire.bannedChampions);
-		$it: Iterator();
+		$ch: ChampionDTO(name memberOf questionnaire.bannedChampions)
+		$it: Iterator()
 	then
 		$it.remove();
 		delete($ch);
@@ -19,8 +19,8 @@ end
 		
 rule "Remove picked champions" salience 10
 	when
-		$ch: ChampionDTO(name memberOf questionnaire.pickedChampions);
-		$it: Iterator();
+		$ch: ChampionDTO(name memberOf questionnaire.pickedChampions)
+		$it: Iterator()
 	then
 		$it.remove();
 		delete($ch);
@@ -31,11 +31,10 @@ rule "Score difficulty"
 	no-loop true
 	lock-on-active true
 	when
-		$ch: ChampionDTO();
+		$ch: ChampionDTO()
 	then
 		int difficultyDifference = Math.abs(Difficulty.fromString(questionnaire.getDifficulty()).getValue() - $ch.getDifficulty().getValue());
 		$ch.setScore($ch.getScore() + ((difficultyDifference == 0) ? 40 : -difficultyDifference * 20));
-		
 		update($ch);
 end
 
@@ -43,11 +42,10 @@ rule "Score style"
 	no-loop true
 	lock-on-active true
 	when
-		$ch: ChampionDTO();
+		$ch: ChampionDTO()
 	then
 		int styleDifference = -Math.abs(Math.round(($ch.getStyle() - questionnaire.getStyle()) / 2));
 		$ch.setScore($ch.getScore() + styleDifference);
-		
 		update($ch);
 end
 
@@ -55,10 +53,9 @@ rule "Score attack type"
 	no-loop true
 	lock-on-active true
 	when
-		$ch: ChampionDTO();
+		$ch: ChampionDTO()
 	then
 		$ch.setScore($ch.getScore() + ((AttackType.fromString(questionnaire.getAttackType()) == $ch.getAttackType()) ? 35 : -20));
-		
 		update($ch);
 end
 
@@ -66,9 +63,28 @@ rule "Score damage type"
 	no-loop true
 	lock-on-active true
 	when
-		$ch: ChampionDTO();
+		$ch: ChampionDTO()
 	then
 		$ch.setScore($ch.getScore() + ((DamageType.fromString(questionnaire.getDamageType()) == $ch.getDamageType()) ? 40 : -30));
-		
+		update($ch);
+end
+
+rule "Extra score when both classes match (accumulate)"
+	no-loop true
+	lock-on-active true
+	when
+		$ch: ChampionDTO(classes.size == 2)
+		$q: QuestionnaireDTO(championClasses.size == 2)
+		Number(intValue == 2) from accumulate(
+			ChampClass(
+				champClass memberOf $q.championClasses
+			) from $ch.classes,
+			init(int cnt = 0;),
+			action(cnt += 1;),
+			result(cnt)
+		)
+	then
+		$ch.setScore($ch.getScore() + 60);
+		// System.out.println("Prosao za: " + $ch.getName());
 		update($ch);
 end
