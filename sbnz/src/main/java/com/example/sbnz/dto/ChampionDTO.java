@@ -1,12 +1,13 @@
 package com.example.sbnz.dto;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import com.example.sbnz.model.*;
 
 
-public class ChampionDTO {
+public class ChampionDTO implements Comparable<ChampionDTO> {
 
 	private List<ChampClass> classes;
 	
@@ -103,6 +104,17 @@ public class ChampionDTO {
 	
 	public int getScore() {
 		return this.score;
+	}
+
+	@Override
+	public int compareTo(ChampionDTO o) {
+		// TODO Auto-generated method stub
+		if (this.score > o.score)
+			return -1;
+		else if (this.score < o.score)
+			return 1;
+		else
+		    return 0;
 	}
 	
 }

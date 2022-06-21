@@ -1,0 +1,13 @@
+<div *ngIf="!selected">
+  <h2>Select damage type that you prefer:</h2>
+  <div class="grid" id="checkboxgroup" (change)="onChange($event)">
+    <input type="checkbox" value="Physical" name="physical" />
+    <label for="physical">Physical</label>
+
+    <input type="checkbox" value="Magic" name="magic" />
+    <label for="magic">Magic</label>
+
+    <input type="checkbox" value="Mixed" name="mixed" />
+    <label for="mixed">Mixed</label>
+  </div>
+</div>

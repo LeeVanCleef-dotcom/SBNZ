@@ -1,0 +1,12 @@
+<div *ngIf="championsList.length !== 0">
+  <h2>Best matches for you: </h2>
+  <div class="grid">
+    <div
+      *ngFor="let champ of championsList"
+      class="square"
+    >
+      <img src="{{ fillUrlTemplate(champ) }}" alt="Ne radi" />
+      <p>{{ champ.name }}</p>
+    </div>
+  </div>
+</div>

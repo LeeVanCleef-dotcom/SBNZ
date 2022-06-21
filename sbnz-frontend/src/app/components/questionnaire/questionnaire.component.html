@@ -1,0 +1,30 @@
+<div class="container">
+  <div class="grid">
+    <app-champion-list
+      [fillUrlTemplate]="fillUrlTemplate"
+      [championsList]="championsList"
+      (removed)="onChampionRemoved($event)"
+    ></app-champion-list>
+
+    <app-class-selection
+      (clicked)="onChampionClassClicked($event)"
+    ></app-class-selection>
+
+    <app-attack-type-selection
+      (changed)="onAttackTypeSelected($event)"
+    ></app-attack-type-selection>
+
+    <app-damage-type-selection
+      (changed)="onDamageTypeSelected($event)"
+    ></app-damage-type-selection>
+
+    <app-difficulty-selection
+      (changed)="onDifficultySelected($event)"
+    ></app-difficulty-selection>
+
+    <app-sorted-suggestions
+      [fillUrlTemplate]="fillUrlTemplate"
+      [championsList]="sortedSuggestions"
+    ></app-sorted-suggestions>
+  </div>
+</div>

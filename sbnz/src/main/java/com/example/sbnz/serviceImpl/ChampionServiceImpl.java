@@ -1,6 +1,7 @@
 package com.example.sbnz.serviceImpl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -71,7 +72,12 @@ public class ChampionServiceImpl implements ChampionService {
 			kieSession.fireAllRules();
 		}
 		
-		return champions;
+		Collections.sort(champions);
+		List<ChampionDTO> sortedSuggestions = new ArrayList<>();
+		for (int i = 0; i <= 5; ++i)
+			sortedSuggestions.add(champions.get(i));
+		
+		return sortedSuggestions;
 	}
 
 }

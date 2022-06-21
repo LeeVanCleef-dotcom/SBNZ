@@ -1,0 +1,22 @@
+<div *ngIf="numberOfSelectedClasses < maxNumberOfSelectedItems">
+  <h2>Select class/classes that you prefer to play:</h2>
+  <div class="grid" id="checkboxgroup" (click)="onClick($event)">
+    <input type="checkbox" value="Assassin" name="assassin" />
+    <label for="assassin">Assassin</label>
+
+    <input type="checkbox" value="Fighter" name="fighter" />
+    <label for="fighter">Fighter</label>
+
+    <input type="checkbox" value="Mage" name="mage" />
+    <label for="mage">Mage</label>
+
+    <input type="checkbox" value="Marksman" name="marksman" />
+    <label for="marksman">Marksman</label>
+
+    <input type="checkbox" value="Support" name="support" />
+    <label for="support">Support</label>
+
+    <input type="checkbox" value="Tank" name="tank" />
+    <label for="tank">Tank</label>
+  </div>
+</div>

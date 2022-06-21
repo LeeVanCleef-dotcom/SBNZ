@@ -1,5 +1,6 @@
 package com.example.sbnz.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,7 @@ public class QuestionnaireController {
 	@Autowired
 	private QuestionnaireService questionnaireService;
 	
+	@CrossOrigin(origins = "*")
 	@PostMapping(value = "/submit", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<ChampionDTO>> submitQuestionnaire(@RequestBody QuestionnaireDTO questionnaire) {
 		return new ResponseEntity<>(questionnaireService.submitQuestionnaire(questionnaire), HttpStatus.OK);

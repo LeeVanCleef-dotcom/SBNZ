@@ -1,0 +1,13 @@
+<div *ngIf="!selected">
+  <h2>Select attack type that you prefer:</h2>
+  <div class="grid" id="checkboxgroup" (change)="onChange($event)">
+    <input type="checkbox" value="Meele" name="meele" />
+    <label for="meele">Meele</label>
+
+    <input type="checkbox" value="Ranged" name="ranged" />
+    <label for="ranged">Ranged</label>
+
+    <input type="checkbox" value="Hybrid" name="hybrid" />
+    <label for="hybrid">Hybrid</label>
+  </div>
+</div>
