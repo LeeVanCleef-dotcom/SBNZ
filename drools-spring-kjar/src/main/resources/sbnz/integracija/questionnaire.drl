@@ -34,7 +34,7 @@ rule "Score difficulty"
 		$ch: ChampionDTO()
 	then
 		int difficultyDifference = Math.abs(Difficulty.fromString(questionnaire.getDifficulty()).getValue() - $ch.getDifficulty().getValue());
-		$ch.setScore($ch.getScore() + ((difficultyDifference == 0) ? 40 : -difficultyDifference * 20));
+		$ch.setScore($ch.getScore() + ((difficultyDifference == 0) ? 40 : -difficultyDifference * 30));
 		update($ch);
 end
 
@@ -55,7 +55,7 @@ rule "Score attack type"
 	when
 		$ch: ChampionDTO()
 	then
-		$ch.setScore($ch.getScore() + ((AttackType.fromString(questionnaire.getAttackType()) == $ch.getAttackType()) ? 35 : -20));
+		$ch.setScore($ch.getScore() + ((AttackType.fromString(questionnaire.getAttackType()) == $ch.getAttackType()) ? 45 : -30));
 		update($ch);
 end
 
@@ -65,7 +65,7 @@ rule "Score damage type"
 	when
 		$ch: ChampionDTO()
 	then
-		$ch.setScore($ch.getScore() + ((DamageType.fromString(questionnaire.getDamageType()) == $ch.getDamageType()) ? 40 : -30));
+		$ch.setScore($ch.getScore() + ((DamageType.fromString(questionnaire.getDamageType()) == $ch.getDamageType()) ? 45 : -30));
 		update($ch);
 end
 

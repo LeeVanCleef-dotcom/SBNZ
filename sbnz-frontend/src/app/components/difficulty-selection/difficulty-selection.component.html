@@ -1,5 +1,7 @@
 <div *ngIf="!selected">
-  <h2>Select champion difficulty level that you feel comfortable playing with: </h2>
+  <h2>
+    Select champion difficulty level that you feel comfortable playing with:
+  </h2>
   <div class="grid" id="checkboxgroup" (change)="onChange($event)">
     <input type="checkbox" value="I" name="i" />
     <label for="i">I</label>
@@ -11,3 +13,5 @@
     <label for="iii">III</label>
   </div>
 </div>
+
+<br /><br /><br />
